@@ -129,7 +129,7 @@ export function ProjectSummary({
                 </Suspense>
               )}
             </div>
-          </>
+          </>        
         )}
         {model.type === 'phone' && (
           <>

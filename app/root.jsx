@@ -13,6 +13,7 @@ import { createCookieSessionStorage, json } from '@remix-run/cloudflare';
 import { ThemeProvider, themeStyles } from '~/components/theme-provider';
 import GothamBook from '~/assets/fonts/gotham-book.woff2';
 import GothamMedium from '~/assets/fonts/gotham-medium.woff2';
+import AeonikBold from '~/assets/fonts/aeonik-bold.otf';
 import { useEffect } from 'react';
 import { Error } from '~/layouts/error';
 import { VisuallyHidden } from '~/components/visually-hidden';
@@ -36,6 +37,12 @@ export const links = () => [
     href: GothamBook,
     as: 'font',
     type: 'font/woff2',
+    crossOrigin: '',
+  },
+  { rel: 'preload',
+    href: AeonikBold,
+    as: 'font',
+    type: 'font/otf',
     crossOrigin: '',
   },
   { rel: 'manifest', href: '/manifest.json' },

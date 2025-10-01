@@ -1,15 +1,15 @@
-import gamestackTexture2Large from '~/assets/gamestack-list-large.jpg';
+import gamestackTexture2Large from '~/assets/kipper-mobile-screenshot-berry.png';
 import gamestackTexture2Placeholder from '~/assets/gamestack-list-placeholder.jpg';
-import gamestackTexture2 from '~/assets/gamestack-list.jpg';
-import gamestackTextureLarge from '~/assets/gamestack-login-large.jpg';
+import gamestackTexture2 from '~/assets/kipper-mobile-screenshot-berry.png';
+import gamestackTextureLarge from '~/assets/kipper-mobile-screenshot-home.png';
 import gamestackTexturePlaceholder from '~/assets/gamestack-login-placeholder.jpg';
-import gamestackTexture from '~/assets/gamestack-login.jpg';
-import sliceTextureLarge from '~/assets/slice-app-large.jpg';
+import gamestackTexture from '~/assets/kipper-mobile-screenshot-home.png';
+import imageSketchLandingPageLarge from '~/assets/sketch-landing.jpg';
 import sliceTexturePlaceholder from '~/assets/slice-app-placeholder.jpg';
-import sliceTexture from '~/assets/slice-app.jpg';
-import sprTextureLarge from '~/assets/spr-lesson-builder-dark-large.jpg';
-import sprTexturePlaceholder from '~/assets/spr-lesson-builder-dark-placeholder.jpg';
-import sprTexture from '~/assets/spr-lesson-builder-dark.jpg';
+import imageSketchLandingPage from '~/assets/sketch-landing.jpg';
+import sonoceaTextureLarge from '~/assets/sonocea-landing-page-large.jpg';
+import sonoceaPlaceholder from '~/assets/sonocea-landing-page-placeholder.jpg';
+import sonoceaTexture from '~/assets/sonocea-landing-page-medium.jpg';
 import { Footer } from '~/components/footer';
 import { baseMeta } from '~/utils/meta';
 import { Intro } from './intro';
@@ -103,17 +103,17 @@ export const Home = () => {
         sectionRef={projectOne}
         visible={visibleSections.includes(projectOne.current)}
         index={1}
-        title="Designing the future of education"
-        description="Designing a platform to help educators build better online courseware"
+        title="Welcome to the Sonic Revolution"
+        description="Developing a wellness platform to introduce sonic augmentation technology to the world"
         buttonText="View project"
-        buttonLink="/projects/smart-sparrow"
+        buttonLink="/projects/sonocea"
         model={{
           type: 'laptop',
-          alt: 'Smart Sparrow lesson builder',
+          alt: 'Sonocea landing page',
           textures: [
             {
-              srcSet: `${sprTexture} 1280w, ${sprTextureLarge} 2560w`,
-              placeholder: sprTexturePlaceholder,
+              srcSet: `${sonoceaTexture} 800w, ${sonoceaTextureLarge} 1479w`,
+              placeholder: sonoceaPlaceholder,
             },
           ],
         }}
@@ -124,10 +124,10 @@ export const Home = () => {
         sectionRef={projectTwo}
         visible={visibleSections.includes(projectTwo.current)}
         index={2}
-        title="Video game progress tracking"
-        description="Design and development for a video game tracking app built in React Native"
+        title="Shopify theme customisation for Kipper"
+        description="Customising a Shopify theme to create a seamless shopping experience for Kipper, a high-end online  store for bespoke women's suits"
         buttonText="View website"
-        buttonLink="https://gamestack.hamishw.com"
+        buttonLink="https://kipper.club"
         model={{
           type: 'phone',
           alt: 'App login screen',
@@ -148,16 +148,16 @@ export const Home = () => {
         sectionRef={projectThree}
         visible={visibleSections.includes(projectThree.current)}
         index={3}
-        title="Biomedical image collaboration"
-        description="Increasing the amount of collaboration in Slice, an app for biomedical imaging"
-        buttonText="View project"
-        buttonLink="/projects/slice"
+        title="Webflow redesign for Sketch Up"
+        description='Design and development for SketchUp’s "Design Sprint Challenge" campaign, including website design, development, and digital assets'
+        buttonText="Visit website"
+        buttonLink="https://designers.sketchup.com/"
         model={{
           type: 'laptop',
-          alt: 'Annotating a biomedical image in the Slice app',
+          alt: 'SketchUp landing page',
           textures: [
             {
-              srcSet: `${sliceTexture} 800w, ${sliceTextureLarge} 1920w`,
+              srcSet: `${imageSketchLandingPage} 800w, ${imageSketchLandingPageLarge} 1920w`,
               placeholder: sliceTexturePlaceholder,
             },
           ],
@@ -168,6 +168,7 @@ export const Home = () => {
         visible={visibleSections.includes(details.current)}
         id="details"
       />
+      
       <Footer />
     </div>
   );

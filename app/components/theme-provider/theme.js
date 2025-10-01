@@ -12,7 +12,7 @@ const baseTokens = {
   durationXL: '800ms',
   systemFontStack:
     'system-ui, -apple-system, BlinkMacSystemFont, San Francisco, Roboto, Segoe UI, Ubuntu, Helvetica Neue, sans-serif',
-  fontStack: `Gotham, var(--systemFontStack)`,
+  fontStack: `Aeonik Bold, var(--systemFontStack)`,
   monoFontStack:
     'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace',
   japaneseFontStack:
@@ -37,7 +37,7 @@ const baseTokens = {
   maxWidthM: '720px',
   maxWidthL: '1096px',
   maxWidthXL: '1680px',
-  spaceOuter: '64px',
+  spaceOuter: '74px',
   spaceXS: '4px',
   spaceS: '8px',
   spaceM: '16px',

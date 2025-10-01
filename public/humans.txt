@@ -10,7 +10,7 @@ _______________________________________________________________________________
 
 DESIGNER | デザイナー
 
-Hamish Williams
+Rowley Thompson
 Hand crafted design & web development
 
 Design tools:
@@ -18,8 +18,8 @@ Figma
 Photoshop
 Blender
 
-twitter.com/hamishmw
-github.com/hamishmw
+
+github.com/Royce-Coolidge
 
 _______________________________________________________________________________
 
