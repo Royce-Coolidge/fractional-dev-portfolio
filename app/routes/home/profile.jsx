@@ -1,6 +1,6 @@
 import profileImgLarge from '~/assets/rowley.png';
 import profileImgPlaceholder from '~/assets/profile-placeholder.jpg';
-import profileImg from '~/assets/rowley.png';
+import profileImg from '~/assets/profile.png';
 import { Button } from '~/components/button';
 import { DecoderText } from '~/components/decoder-text';
 import { Divider } from '~/components/divider';

@@ -1,9 +1,9 @@
 {
-  "name": "portfolio",
-  "homepage": "https://hamishw.com",
-  "description": "Portfolio site for Hamish Williams",
-  "repository": "https://github.com/HamishMW/portfolio.git",
-  "author": "Hamish Williams",
+  "name": "fractional-dev-portfolio",
+  "homepage": "fractional-dev-portfolio.pages.dev",
+  "description": "Portfolio site for Rowley Thompson",
+  "repository": "https://github.com/Royce-Coolidge/fractional-dev-portfolio.git",
+  "author": "Rowley Thompson",
   "sideEffects": false,
   "type": "module",
   "scripts": {
@@ -11,7 +11,7 @@
     "dev": "node ./scripts/dev.cjs && remix vite:dev",
     "start": "wrangler pages dev ./build/client",
     "postinstall": "node ./scripts/draco.cjs",
-    "deploy": "npm run build && wrangler pages deploy ./build/client --project-name portfolio",
+    "deploy": "npm run build && wrangler pages deploy ./build/client --project-name fractional-dev-portfolio",
     "dev:storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build",
     "deploy:storybook": "wrangler pages deploy ./storybook-static --project-name portfolio-storybook --branch main"
