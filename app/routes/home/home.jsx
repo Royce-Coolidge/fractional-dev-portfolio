@@ -1,11 +1,17 @@
-import gamestackTexture2Large from '~/assets/kipper-mobile-screenshot-berry.png';
-import gamestackTexture2Placeholder from '~/assets/gamestack-list-placeholder.jpg';
-import gamestackTexture2 from '~/assets/kipper-mobile-screenshot-berry.png';
-import gamestackTextureLarge from '~/assets/kipper-mobile-screenshot-home.png';
-import gamestackTexturePlaceholder from '~/assets/gamestack-login-placeholder.jpg';
-import gamestackTexture from '~/assets/kipper-mobile-screenshot-home.png';
+import kipper2Large from '~/assets/kipper-mobile-screenshot-berry.png';
+import kipper2Placeholder from '~/assets/gamestack-list-placeholder.jpg';
+import kipper2 from '~/assets/kipper-mobile-screenshot-berry.png';
+import kipperLarge from '~/assets/kipper-mobile-screenshot-home.png';
+import kipperPlaceholder from '~/assets/gamestack-login-placeholder.jpg';
+import kipper from '~/assets/kipper-mobile-screenshot-home.png';
+import taurusMobileScreenLarge from '~/assets/taurus-1.png';
+import taurusMobileScreenPlaceholder from '~/assets/taurus-1-placeholder.jpg';
+import taurusMobileScreen from '~/assets/taurus-1.png';
+import taurusMobileScreen2Large from '~/assets/taurus-2.png';
+import taurusMobileScreen2Placeholder from '~/assets/taurus-2-placeholder.jpg';
+import taurusMobileScreen2 from '~/assets/taurus-2.png';
 import imageSketchLandingPageLarge from '~/assets/sketch-landing.jpg';
-import sliceTexturePlaceholder from '~/assets/slice-app-placeholder.jpg';
+import sketchPlaceholder from '~/assets/sketch-placeholder.jpg';
 import imageSketchLandingPage from '~/assets/sketch-landing.jpg';
 import sonoceaTextureLarge from '~/assets/sonocea-landing-page-large.jpg';
 import sonoceaPlaceholder from '~/assets/sonocea-landing-page-placeholder.jpg';
@@ -53,10 +59,11 @@ export const Home = () => {
   const projectOne = useRef();
   const projectTwo = useRef();
   const projectThree = useRef();
+  const projectFour = useRef();
   const details = useRef();
 
   useEffect(() => {
-    const sections = [intro, projectOne, projectTwo, projectThree, details];
+    const sections = [intro, projectOne, projectTwo, projectThree, projectFour, details];
 
     const sectionObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -133,12 +140,12 @@ export const Home = () => {
           alt: 'App login screen',
           textures: [
             {
-              srcSet: `${gamestackTexture} 375w, ${gamestackTextureLarge} 750w`,
-              placeholder: gamestackTexturePlaceholder,
+              srcSet: `${kipper} 375w, ${kipperLarge} 750w`,
+              placeholder: kipperPlaceholder,
             },
             {
-              srcSet: `${gamestackTexture2} 375w, ${gamestackTexture2Large} 750w`,
-              placeholder: gamestackTexture2Placeholder,
+              srcSet: `${kipper2} 375w, ${kipper2Large} 750w`,
+              placeholder: kipper2Placeholder,
             },
           ],
         }}
@@ -158,7 +165,32 @@ export const Home = () => {
           textures: [
             {
               srcSet: `${imageSketchLandingPage} 800w, ${imageSketchLandingPageLarge} 1920w`,
-              placeholder: sliceTexturePlaceholder,
+              placeholder: sketchPlaceholder,
+            },
+          ],
+        }}
+      />
+        <ProjectSummary
+        id="project-4"
+        alternate
+        sectionRef={projectFour}
+        visible={visibleSections.includes(projectFour.current)}
+        index={4}
+        title="Website for an adventure travel company"
+        description="Design and development for Taurus & Leo, an adventure travel company"
+        buttonText="View website"
+        buttonLink="https://www.taurusandleo.co.uk/"
+        model={{
+          type: 'phone',
+          alt: 'Taurus & Leo landing page',
+          textures: [
+            {
+              srcSet: `${taurusMobileScreen} 375w, ${taurusMobileScreenLarge} 750w`,
+              placeholder: taurusMobileScreenPlaceholder,
+            },
+            {
+              srcSet: `${taurusMobileScreen2} 375w, ${taurusMobileScreen2Large} 750w`,
+              placeholder: taurusMobileScreen2Placeholder,
             },
           ],
         }}

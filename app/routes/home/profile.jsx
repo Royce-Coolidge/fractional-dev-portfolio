@@ -18,17 +18,16 @@ import styles from './profile.module.css';
 const ProfileText = ({ visible, titleId }) => (
   <Fragment>
     <Heading className={styles.title} data-visible={visible} level={3} id={titleId}>
-      <DecoderText text="Hi there" start={visible} delay={500} />
+      <DecoderText text="Bom día!" start={visible} delay={500} />
     </Heading>
     <Text className={styles.description} data-visible={visible} size="l" as="p">
-      I’m Rowley, currently I live in Lisbon working as a freelance developer. My projects include UX design, UI
-      animations, Website development, Shopify theme development, and icon illustration. Being comfortable with code allows me to rapidly
-      prototype and validate experiences. If you’re interested in the tools and software I
+      I’m Rowley, I currently live in Lisbon working as a freelance web developer. My projects include UX design, UI
+      animations, squarespace development, shopify theme development, and icon illustration. Being comfortable with code allows me to customize any website to my clients' needs. If you’re interested in the tools and software I
       use check out my <Link href="/uses">uses page</Link>.
     </Text>
     <Text className={styles.description} data-visible={visible} size="l" as="p">
-      In my spare time I like to surf, play padel and drink tea (..I am British 🇬🇧). I’m always down for hearing
-      about new projects, so feel free to drop me a line.
+      In my spare time I like to surf, read barbara kingsolver books, write bad poetry, and drink copious amounts of yorkshire tea (I'm British 🇬🇧 btw). I’m always down for hearing
+      about new projects, or gettting good book recommendations, so feel free to drop me a line.
     </Text>
   </Fragment>
 );

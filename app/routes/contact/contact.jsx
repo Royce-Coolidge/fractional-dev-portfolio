@@ -32,67 +32,92 @@ const MAX_MESSAGE_LENGTH = 4096;
 const EMAIL_PATTERN = /(.+)@(.+){2,}\.(.+){2,}/;
 
 export async function action({ context, request }) {
+  try {
+    // Check if required environment variables exist
+    if (!context.cloudflare.env.AWS_ACCESS_KEY_ID || !context.cloudflare.env.AWS_SECRET_ACCESS_KEY || !context.cloudflare.env.EMAIL || !context.cloudflare.env.FROM_EMAIL) {
+      console.error('Missing required environment variables');
+      return json({ errors: { general: 'Server configuration error' } }, { status: 500 });
+    }
 
-  const ses = new SESClient({
-    region: 'eu-north-1',
-    credentials: {
-      accessKeyId: context.cloudflare.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: context.cloudflare.env.AWS_SECRET_ACCESS_KEY,
-    },
-  });
-
-  const formData = await request.formData();
-  const isBot = String(formData.get('name'));
-  const email = String(formData.get('email'));
-  const message = String(formData.get('message'));
-  const errors = {};
-
-  // Return without sending if a bot trips the honeypot
-  if (isBot) return json({ success: true });
-
-  // Handle input validation on the server
-  if (!email || !EMAIL_PATTERN.test(email)) {
-    errors.email = 'Please enter a valid email address.';
-  }
-
-  if (!message) {
-    errors.message = 'Please enter a message.';
-  }
-
-  if (email.length > MAX_EMAIL_LENGTH) {
-    errors.email = `Email address must be shorter than ${MAX_EMAIL_LENGTH} characters.`;
-  }
-
-  if (message.length > MAX_MESSAGE_LENGTH) {
-    errors.message = `Message must be shorter than ${MAX_MESSAGE_LENGTH} characters.`;
-  }
-
-  if (Object.keys(errors).length > 0) {
-    return json({ errors });
-  }
-
-  // Send email via Amazon SES
-  await ses.send(
-    new SendEmailCommand({
-      Destination: {
-        ToAddresses: [context.cloudflare.env.EMAIL],
+    const ses = new SESClient({
+      region: 'eu-north-1',
+      credentials: {
+        accessKeyId: context.cloudflare.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: context.cloudflare.env.AWS_SECRET_ACCESS_KEY,
       },
-      Message: {
-        Body: {
-          Text: {
-            Data: `From: ${email}\n\n${message}`,
+    });
+
+    const formData = await request.formData();
+    const isBot = String(formData.get('name'));
+    const email = String(formData.get('email'));
+    const message = String(formData.get('message'));
+    const errors = {};
+
+    // Return without sending if a bot trips the honeypot
+    if (isBot) return json({ success: true });
+
+    // Handle input validation on the server
+    if (!email || !EMAIL_PATTERN.test(email)) {
+      errors.email = 'Please enter a valid email address.';
+    }
+
+    if (!message) {
+      errors.message = 'Please enter a message.';
+    }
+
+    if (email.length > MAX_EMAIL_LENGTH) {
+      errors.email = `Email address must be shorter than ${MAX_EMAIL_LENGTH} characters.`;
+    }
+
+    if (message.length > MAX_MESSAGE_LENGTH) {
+      errors.message = `Message must be shorter than ${MAX_MESSAGE_LENGTH} characters.`;
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return json({ errors });
+    }
+
+    // Send email via Amazon SES
+    await ses.send(
+      new SendEmailCommand({
+        Destination: {
+          ToAddresses: [context.cloudflare.env.EMAIL],
+        },
+        Message: {
+          Body: {
+            Text: {
+              Data: `From: ${email}\n\n${message}`,
+            },
+          },
+          Subject: {
+            Data: `Portfolio message from ${email}`,
           },
         },
-        Subject: {
-          Data: `Portfolio message from ${email}`,
-        },
-      },
-      Source: `Portfolio <${context.cloudflare.env.FROM_EMAIL}>`,
-      ReplyToAddresses: [email],
-    })
-  );
+        Source: `Portfolio <${context.cloudflare.env.FROM_EMAIL}>`,
+        ReplyToAddresses: [email],
+      })
+    );
 
-  return json({ success: true });
+    return json({ success: true });
+  } catch (error) {
+    console.error('Contact form error:', error);
+
+    // Log more detailed error information
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      name: error.name,
+      stack: error.stack
+    });
+
+    // Return more specific error message for debugging
+    const errorMessage = error.message || 'Failed to send message';
+    return json({
+      errors: {
+        general: `Failed to send message: ${errorMessage}`
+      }
+    }, { status: 500 });
+  }
 }
 
 export const Contact = () => {
@@ -176,8 +201,7 @@ export const Contact = () => {
                   <div className={styles.formErrorContent} ref={errorRef}>
                     <div className={styles.formErrorMessage}>
                       <Icon className={styles.formErrorIcon} icon="error" />
-                      {actionData?.errors?.email}
-                      {actionData?.errors?.message}
+                      {actionData?.errors?.general || actionData?.errors?.email || actionData?.errors?.message}
                     </div>
                   </div>
                 </div>

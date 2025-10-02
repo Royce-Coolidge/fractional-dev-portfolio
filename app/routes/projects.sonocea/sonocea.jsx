@@ -1,56 +1,31 @@
-import backgroundSonLarge from '~/assets/son-background-large.jpg';
+
 import backgroundSonPlaceholder from '~/assets/son-background-placeholder.jpg';
 import imageSonLandingPageLarge from '~/assets/sonocea-landing-page-large.jpg';
 import imageSonLandingPagePlaceholder from '~/assets/sonocea-landing-page-placeholder.jpg';
 import imageSonLandingPage from '~/assets/sonocea-landing-page-medium.jpg';
-import imageSprBackgroundVolcanismLarge from '~/assets/spr-background-volcanism-large.jpg';
-import imageSprBackgroundVolcanismPlaceholder from '~/assets/spr-background-volcanism-placeholder.jpg';
-import imageSprBackgroundVolcanism from '~/assets/spr-background-volcanism.jpg';
 import imageSonBackground from '~/assets/son-background.jpg';
 import imageSonBackgroundLarge from '~/assets/son-background-large.jpg';
 import imageSonBackgroundPlaceholder from '~/assets/son-background-placeholder.jpg';
-
 import imageSonComponentsDarkPlaceholder from '~/assets/son-components-dark-placeholder.jpg';
 import imageSonComponentsDark from '~/assets/son-components-dark.png';
 import imageSonComponentsDarkLarge from '~/assets/son-components-dark-large.jpg';
 import imageSonComponentsLight from '~/assets/son-components-light.png';
 import imageSonComponentsLightLarge from '~/assets/son-components-light-large.jpg';
 import imageSonComponentsLightPlaceholder from '~/assets/son-components-light-placeholder.jpg';
-
-
-
-import videoSonLogoDark from '~/assets/sonocea-logo-dark.mp4';
-
 import imageSonWireframe1 from '~/assets/son-wireframe-1.png';
 import imageSonWireframe2 from '~/assets/son-wireframe-2.png';
+import imageSonWireframe2Placeholder from '~/assets/son-wireframe-2-placeholder.jpg';
+import imageSonWireframe1Placeholder from '~/assets/son-wireframe-1-placeholder.jpg';
 
 import videoSonMotionLarge from '~/assets/son-landing-page-scroll-large.mp4';
 import videoSonMotion from '~/assets/son-landing-page-scroll.mp4';
-import videoSonMotionPlaceholder from '~/assets/spr-motion-placeholder.jpg';
+import videoSonMotionPlaceholder from '~/assets/son-motion-placeholder.jpg';
 
 import imageSonBackgroundTwoLarge from '~/assets/son-background-clouds-large.jpg';
 
 import imageSonBackgroundTwo from '~/assets/son-background-clouds.jpg';
 
-import imageSprSchema1DarkLarge from '~/assets/spr-schema-1-dark-large.png';
-import imageSprSchema1DarkPlaceholder from '~/assets/spr-schema-1-dark-placeholder.png';
-import imageSprSchema1Dark from '~/assets/spr-schema-1-dark.png';
-import imageSprSchema1LightLarge from '~/assets/spr-schema-1-light-large.png';
-import imageSprSchema1LightPlaceholder from '~/assets/spr-schema-1-light-placeholder.png';
-import imageSprSchema1Light from '~/assets/spr-schema-1-light.png';
-import imageSprSchema2DarkLarge from '~/assets/spr-schema-2-dark-large.png';
-import imageSprSchema2DarkPlaceholder from '~/assets/spr-schema-2-dark-placeholder.png';
-import imageSprSchema2Dark from '~/assets/spr-schema-2-dark.png';
-import imageSprSchema2LightLarge from '~/assets/spr-schema-2-light-large.png';
-import imageSprSchema2LightPlaceholder from '~/assets/spr-schema-2-light-placeholder.png';
-import imageSprSchema2Light from '~/assets/spr-schema-2-light.png';
-import imageSprStoryboarderDarkLarge from '~/assets/spr-storyboarder-dark-large.png';
-import imageSprStoryboarderDarkPlaceholder from '~/assets/spr-storyboarder-dark-placeholder.png';
-import imageSprStoryboarderDark from '~/assets/spr-storyboarder-dark.png';
-import imageSprStoryboarderLightLarge from '~/assets/spr-storyboarder-light-large.png';
-import imageSprStoryboarderLightPlaceholder from '~/assets/spr-storyboarder-light-placeholder.png';
-import imageSprStoryboarderLight from '~/assets/spr-storyboarder-light.png';
-import { Footer } from '~/components/footer';
+
 import { Image } from '~/components/image';
 import { Link } from '~/components/link';
 import { SegmentedControl, SegmentedControlOption } from '~/components/segmented-control';
@@ -71,6 +46,7 @@ import { baseMeta } from '~/utils/meta';
 import { Suspense, lazy, useMemo } from 'react';
 import { media } from '~/utils/style';
 import styles from './sonocea.module.css';
+import { Footer } from '~/components/footer';
 
 const Earth = lazy(() => import('./earth').then(module => ({ default: module.Earth })));
 const EarthSection = lazy(() =>
@@ -199,7 +175,7 @@ export const Sonocea = () => {
                 srcSet={`${imageSonBackgroundTwo} 1280w, ${imageSonBackgroundTwoLarge} 2560w`}
                 width={1280}
                 height={900}
-                placeholder={imageSprBackgroundVolcanismPlaceholder}
+                placeholder={backgroundSonPlaceholder}
                 alt="A dramatic ocean scene with lava forming a new land mass."
                 sizes="100vw"
               />
@@ -238,11 +214,7 @@ export const Sonocea = () => {
                 srcSet={ `${imageSonWireframe2} 260w, ${imageSonWireframe2} 520w`}
                 width={260}
                 height={660}
-                placeholder={
-                  isDark
-                    ? imageSprSchema1DarkPlaceholder
-                    : imageSprSchema1LightPlaceholder
-                }
+                placeholder={imageSonWireframe2Placeholder}
                 alt="Configuration options for text."
                 sizes={`(max-width: ${media.mobile}px) 50vw, 25vw`}
               />
@@ -251,11 +223,7 @@ export const Sonocea = () => {
                 className={styles.sidebarImage}
                 srcSet={`${imageSonWireframe1} 260w, ${imageSonWireframe1} 520w`}                 width={260}
                 height={660}
-                placeholder={
-                  isDark
-                    ? imageSprSchema2DarkPlaceholder
-                    : imageSprSchema2LightPlaceholder
-                }
+                placeholder={imageSonWireframe1Placeholder}
                 alt="Configuration options for text."
                 sizes={`(max-width: ${media.mobile}px) 50vw, 25vw`}
               />
