@@ -159,7 +159,7 @@ export const Home = () => {
         sectionRef={projectThree}
         visible={visibleSections.includes(projectThree.current)}
         index={3}
-        title="Scrol Animation for an Architecture website"
+        title="Scroll Animation for an Architecture website"
         description='Creating a scroll animation for an architecture website'
         buttonText="Visit website"
         buttonLink="https://capsule-scroll.pages.dev/"
