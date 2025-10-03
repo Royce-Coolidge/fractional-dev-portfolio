@@ -11,6 +11,10 @@ import taurusMobileScreen2Large from '~/assets/taurus-2.png';
 import taurusMobileScreen2Placeholder from '~/assets/taurus-2-placeholder.jpg';
 import taurusMobileScreen2 from '~/assets/taurus-2.png';
 import imageSketchLandingPageLarge from '~/assets/sketch-landing.jpg';
+import imageCapsuleScroll from '~/assets/capsule-scroll.jpg';
+import imageCapsuleScrollLarge from '~/assets/capsule-scroll-large.jpg';
+import imageCapsuleScrollPlaceholder from '~/assets/capsule-scroll-placeholder.jpg';
+import videoCapsuleScroll from '~/assets/capsule-scroll.mp4';
 import sketchPlaceholder from '~/assets/sketch-placeholder.jpg';
 import imageSketchLandingPage from '~/assets/sketch-landing.jpg';
 import sonoceaTextureLarge from '~/assets/sonocea-landing-page-large.jpg';
@@ -110,7 +114,7 @@ export const Home = () => {
         sectionRef={projectOne}
         visible={visibleSections.includes(projectOne.current)}
         index={1}
-        title="Welcome to the Sonic Revolution"
+        title="Sonocea's website - built from scratch"
         description="Developing a wellness platform to introduce sonic augmentation technology to the world"
         buttonText="View project"
         buttonLink="/projects/sonocea"
@@ -155,17 +159,17 @@ export const Home = () => {
         sectionRef={projectThree}
         visible={visibleSections.includes(projectThree.current)}
         index={3}
-        title="Webflow redesign for Sketch Up"
-        description='Design and development for SketchUp’s "Design Sprint Challenge" campaign, including website design, development, and digital assets'
+        title="Scrol Animation for an Architecture website"
+        description='Creating a scroll animation for an architecture website'
         buttonText="Visit website"
-        buttonLink="https://designers.sketchup.com/"
+        buttonLink="https://capsule-scroll.pages.dev/"
         model={{
           type: 'laptop',
           alt: 'SketchUp landing page',
           textures: [
             {
-              srcSet: `${imageSketchLandingPage} 800w, ${imageSketchLandingPageLarge} 1920w`,
-              placeholder: sketchPlaceholder,
+              srcSet: `${imageCapsuleScroll} 800w, ${imageCapsuleScrollLarge} 1920w`,
+              placeholder: imageCapsuleScrollPlaceholder,
             },
           ],
         }}
