@@ -39,7 +39,8 @@ export const links = () => [
     type: 'font/woff2',
     crossOrigin: '',
   },
-  { rel: 'preload',
+  {
+    rel: 'preload',
     href: AeonikBold,
     as: 'font',
     type: 'font/otf',

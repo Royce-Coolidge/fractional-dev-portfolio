@@ -23,11 +23,11 @@ const ProfileText = ({ visible, titleId }) => (
     <Text className={styles.description} data-visible={visible} size="l" as="p">
       I’m Rowley, I currently live in Lisbon working as a freelance web developer. My projects include UX design, UI
       animations, squarespace development, shopify theme development, and icon illustration. Being comfortable with code allows me to customize any website to my clients' needs. If you’re interested in the tools and software I
-      use check out my <Link href="/uses">uses page</Link>. Currently im nerding out on text reveal animations, take a look at my most recent <Link href="https://developer-for-designers.pages.dev/">text reveal experiment!</Link> .
+      use check out my <Link href="/uses">uses page</Link>. Currently im nerding out on text reveal animations, take a look at my most recent <Link href="https://developer-for-designers.pages.dev/">text reveal experiment</Link> .
     </Text>
     <Text className={styles.description} data-visible={visible} size="l" as="p">
       In my spare time I like to surf, read barbara kingsolver books, write bad poetry, and drink copious amounts of yorkshire tea (I'm British 🇬🇧 btw). I’m always down for hearing
-      about new projects, or gettting good book recommendations, so feel free to drop me a line.
+      about new projects, or receiving good book recommendations, so feel free to drop me a line.
     </Text>
   </Fragment>
 );

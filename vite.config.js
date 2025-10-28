@@ -15,6 +15,31 @@ export default defineConfig({
   assetsInclude: ['**/*.glb', '**/*.hdr', '**/*.glsl'],
   build: {
     assetsInlineLimit: 1024,
+    // Ensure content hashing is enabled for all assets
+    rollupOptions: {
+      output: {
+        // Use content hashes for all chunk files
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: (assetInfo) => {
+          // Different naming patterns for different asset types
+          if (assetInfo.name && assetInfo.name.endsWith('.css')) {
+            return 'assets/[name]-[hash].css';
+          }
+          if (assetInfo.name && /\.(png|jpe?g|gif|svg|webp|avif)$/.test(assetInfo.name)) {
+            return 'assets/[name]-[hash][extname]';
+          }
+          if (assetInfo.name && /\.(woff2?|eot|ttf|otf)$/.test(assetInfo.name)) {
+            return 'assets/[name]-[hash][extname]';
+          }
+          if (assetInfo.name && /\.(glb|hdr|glsl)$/.test(assetInfo.name)) {
+            return 'assets/[name]-[hash][extname]';
+          }
+          // Default for other assets
+          return 'assets/[name]-[hash][extname]';
+        },
+      },
+    },
   },
   server: {
     port: 7777,
