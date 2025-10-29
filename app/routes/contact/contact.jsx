@@ -146,8 +146,10 @@ export const Contact = () => {
               as="h1"
               style={getDelay(tokens.base.durationXS, initDelay, 0.3)}
             >
-              <DecoderText text="Say hello" start={status !== 'exited'} delay={300} />
+              <DecoderText text="Lets work together" start={status !== 'exited'} delay={300} />
+      
             </Heading>
+            
             <Divider
               className={styles.divider}
               data-status={status}
@@ -179,7 +181,7 @@ export const Contact = () => {
               data-status={status}
               style={getDelay(tokens.base.durationS, initDelay)}
               autoComplete="off"
-              label="Message"
+              label="Tell me about your project..."
               name="message"
               maxLength={MAX_MESSAGE_LENGTH}
               {...message}
