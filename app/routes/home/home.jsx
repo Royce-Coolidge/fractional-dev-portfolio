@@ -1,9 +1,9 @@
-import kipper2Large from '~/assets/kipper-mobile-screenshot-berry.png';
-import kipper2Placeholder from '~/assets/gamestack-list-placeholder.jpg';
-import kipper2 from '~/assets/kipper-mobile-screenshot-berry.png';
-import kipperLarge from '~/assets/kipper-mobile-screenshot-home.png';
-import kipperPlaceholder from '~/assets/gamestack-login-placeholder.jpg';
-import kipper from '~/assets/kipper-mobile-screenshot-home.png';
+import pophams2Large from '~/assets/pophams-mobile-2.png';
+import pophams2Placeholder from '~/assets/gamestack-list-placeholder.jpg';
+import pophams2 from '~/assets/pophams-mobile-2.png';
+import pophamsLarge from '~/assets/pophams-mobile-1.png';
+import pophamsPlaceholder from '~/assets/gamestack-login-placeholder.jpg';
+import pophams from '~/assets/pophams-mobile-1.png';
 import taurusMobileScreenLarge from '~/assets/taurus-1.png';
 import taurusMobileScreenPlaceholder from '~/assets/taurus-1-placeholder.jpg';
 import taurusMobileScreen from '~/assets/taurus-1.png';
@@ -135,21 +135,21 @@ export const Home = () => {
         sectionRef={projectTwo}
         visible={visibleSections.includes(projectTwo.current)}
         index={2}
-        title="Shopify theme customisation for Kipper"
-        description="Customising a Shopify theme to create a seamless shopping experience for Kipper, a high-end online  store for bespoke women's suits"
-        buttonText="View website"
-        buttonLink="https://kipper.club"
+        title="Pophams Bakery"
+        description="Building an online store for Pophams Bakery, a beloved London bakery known for their fresh pastries and artisan breads"
+        buttonText="View project"
+        buttonLink="/projects/pophams"
         model={{
           type: 'phone',
-          alt: 'App login screen',
+          alt: 'Pophams Bakery mobile store',
           textures: [
             {
-              srcSet: `${kipper} 375w, ${kipperLarge} 750w`,
-              placeholder: kipperPlaceholder,
+              srcSet: `${pophams} 375w, ${pophamsLarge} 750w`,
+              placeholder: pophamsPlaceholder,
             },
             {
-              srcSet: `${kipper2} 375w, ${kipper2Large} 750w`,
-              placeholder: kipper2Placeholder,
+              srcSet: `${pophams2} 375w, ${pophams2Large} 750w`,
+              placeholder: pophams2Placeholder,
             },
           ],
         }}
