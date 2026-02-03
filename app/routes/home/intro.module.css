@@ -43,7 +43,7 @@
   font-weight: var(--fontWeightMedium);
   line-height: 1;
   opacity: 0;
-  transition: opacity var(--durationL) var(--bezierFastoutSlowin) 0.2s;
+  transition: opacity var(--durationM) var(--bezierFastoutSlowin) 0.1s;
 
   @media (--mediaLaptop) {
     font-size: calc((22 / 16) * 1rem);

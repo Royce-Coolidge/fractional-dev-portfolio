@@ -80,11 +80,13 @@ export const DisplacementSphere = props => {
     };
 
     startTransition(() => {
-      geometry.current = new SphereGeometry(32, 128, 128);
+      geometry.current = new SphereGeometry(32, 64, 64);
       sphere.current = new Mesh(geometry.current, material.current);
       sphere.current.position.z = 0;
       sphere.current.modifier = Math.random();
       scene.current.add(sphere.current);
+      // Warmup render to compile shader before visible
+      renderer.current.compile(scene.current, camera.current);
     });
 
     return () => {
@@ -183,7 +185,7 @@ export const DisplacementSphere = props => {
   }, [isInViewport, reduceMotion, rotationX, rotationY]);
 
   return (
-    <Transition in timeout={3000} nodeRef={canvasRef}>
+    <Transition in timeout={1000} nodeRef={canvasRef}>
       {({ visible, nodeRef }) => (
         <canvas
           aria-hidden

@@ -12,7 +12,7 @@ import { cssProps } from '~/utils/style';
 import config from '~/config.json';
 import { useHydrated } from '~/hooks/useHydrated';
 import styles from './intro.module.css';
-
+   
 const DisplacementSphere = lazy(() =>
   import('./displacement-sphere').then(module => ({ default: module.DisplacementSphere }))
 );
@@ -60,7 +60,7 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
       tabIndex={-1}
       {...rest}
     >
-      <Transition in key={theme} timeout={3000}>
+      <Transition in key={theme} timeout={1000}>
         {({ visible, status }) => (
           <>
             {isHydrated && (
@@ -70,7 +70,7 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
             )}
             <header className={styles.text}>
               <h1 className={styles.name} data-visible={visible} id={titleId}>
-                <DecoderText text={config.name} delay={500} />
+                <DecoderText text={config.name} delay={100} />
               </h1>
               <Heading level={0} as="h2" className={styles.title}>
                 <VisuallyHidden className={styles.label}>
