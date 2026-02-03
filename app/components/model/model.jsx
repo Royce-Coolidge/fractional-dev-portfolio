@@ -24,6 +24,7 @@ import {
   Scene,
   ShaderMaterial,
   Vector3,
+  VideoTexture,
   WebGLRenderTarget,
   WebGLRenderer,
 } from 'three';
@@ -367,6 +368,12 @@ const Device = ({
   const [loadDevice, setLoadDevice] = useState();
   const reduceMotion = useReducedMotion();
   const placeholderScreen = createRef();
+  const videoElementRef = useRef();
+  const videoTextureRef = useRef();
+  const animationFrameRef = useRef();
+
+  // Check if texture source is a video
+  const isVideo = model.texture?.srcSet?.includes('.mp4') || model.texture?.src?.includes('.mp4');
 
   useEffect(() => {
     const applyScreenTexture = async (texture, node) => {
@@ -381,6 +388,29 @@ const Device = ({
       node.material.color = new Color(0xffffff);
       node.material.transparent = true;
       node.material.map = texture;
+    };
+
+    const applyVideoTexture = (videoElement, node) => {
+      const videoTexture = new VideoTexture(videoElement);
+      videoTexture.colorSpace = SRGBColorSpace;
+      videoTexture.flipY = false;
+      videoTexture.generateMipmaps = false;
+
+      node.material.color = new Color(0xffffff);
+      node.material.transparent = true;
+      node.material.map = videoTexture;
+
+      videoTextureRef.current = videoTexture;
+
+      // Start render loop to update video texture
+      const updateVideoTexture = () => {
+        if (videoTextureRef.current && videoElementRef.current && !videoElementRef.current.paused) {
+          videoTextureRef.current.needsUpdate = true;
+          renderFrame();
+        }
+        animationFrameRef.current = requestAnimationFrame(updateVideoTexture);
+      };
+      animationFrameRef.current = requestAnimationFrame(updateVideoTexture);
     };
 
     // Generate promises to await when ready
@@ -413,16 +443,45 @@ const Device = ({
           applyScreenTexture(placeholder, placeholderScreen.current);
 
           loadFullResTexture = async () => {
-            const image = await resolveSrcFromSrcSet(texture);
-            const fullSize = await textureLoader.loadAsync(image);
-            await applyScreenTexture(fullSize, node);
+            if (isVideo) {
+              // Handle video texture
+              const videoSrc = texture.srcSet?.split(' ')[0] || texture.src;
+              const video = document.createElement('video');
+              video.src = videoSrc;
+              video.muted = true;
+              video.loop = true;
+              video.playsInline = true;
+              video.crossOrigin = 'anonymous';
+              videoElementRef.current = video;
 
-            animate(1, 0, {
-              onUpdate: value => {
-                placeholderScreen.current.material.opacity = value;
-                renderFrame();
-              },
-            });
+              await new Promise((resolve, reject) => {
+                video.onloadeddata = resolve;
+                video.onerror = reject;
+                video.load();
+              });
+
+              video.play();
+              applyVideoTexture(video, node);
+
+              animate(1, 0, {
+                onUpdate: value => {
+                  placeholderScreen.current.material.opacity = value;
+                  renderFrame();
+                },
+              });
+            } else {
+              // Handle image texture
+              const image = await resolveSrcFromSrcSet(texture);
+              const fullSize = await textureLoader.loadAsync(image);
+              await applyScreenTexture(fullSize, node);
+
+              animate(1, 0, {
+                onUpdate: value => {
+                  placeholderScreen.current.material.opacity = value;
+                  renderFrame();
+                },
+              });
+            }
           };
         }
       });
@@ -492,6 +551,21 @@ const Device = ({
 
     setLoadDevice({ start: load });
 
+    return () => {
+      // Cleanup video resources
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      if (videoElementRef.current) {
+        videoElementRef.current.pause();
+        videoElementRef.current.src = '';
+        videoElementRef.current = null;
+      }
+      if (videoTextureRef.current) {
+        videoTextureRef.current.dispose();
+        videoTextureRef.current = null;
+      }
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
