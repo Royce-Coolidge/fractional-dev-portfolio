@@ -4,19 +4,13 @@ import pophams2 from '~/assets/pophams-mobile-2.png';
 import pophamsLarge from '~/assets/pophams-mobile-1.png';
 import pophamsPlaceholder from '~/assets/gamestack-login-placeholder.jpg';
 import pophams from '~/assets/pophams-mobile-1.png';
-import taurusMobileScreenLarge from '~/assets/taurus-1.png';
-import taurusMobileScreenPlaceholder from '~/assets/taurus-1-placeholder.jpg';
 import taurusMobileScreen from '~/assets/taurus-1.png';
-import taurusMobileScreen2Large from '~/assets/taurus-2.png';
-import taurusMobileScreen2Placeholder from '~/assets/taurus-2-placeholder.jpg';
+import taurusMobileScreenPlaceholder from '~/assets/taurus-1-placeholder.jpg';
 import taurusMobileScreen2 from '~/assets/taurus-2.png';
-import imageSketchLandingPageLarge from '~/assets/sketch-landing.jpg';
+import taurusMobileScreen2Placeholder from '~/assets/taurus-2-placeholder.jpg';
 import imageCapsuleScroll from '~/assets/capsule-scroll.jpg';
 import imageCapsuleScrollLarge from '~/assets/capsule-scroll-large.jpg';
 import imageCapsuleScrollPlaceholder from '~/assets/capsule-scroll-placeholder.jpg';
-import videoCapsuleScroll from '~/assets/capsule-scroll.mp4';
-import sketchPlaceholder from '~/assets/sketch-placeholder.jpg';
-import imageSketchLandingPage from '~/assets/sketch-landing.jpg';
 import sonoceaTextureLarge from '~/assets/sonocea-landing-page-large.jpg';
 import sonoceaPlaceholder from '~/assets/sonocea-landing-page-placeholder.jpg';
 import sonoceaTexture from '~/assets/sonocea-landing-page-medium.jpg';
@@ -189,11 +183,11 @@ export const Home = () => {
           alt: 'Taurus & Leo landing page',
           textures: [
             {
-              srcSet: `${taurusMobileScreen} 375w, ${taurusMobileScreenLarge} 750w`,
+              srcSet: `${taurusMobileScreen} 375w, ${taurusMobileScreen} 750w`,
               placeholder: taurusMobileScreenPlaceholder,
             },
             {
-              srcSet: `${taurusMobileScreen2} 375w, ${taurusMobileScreen2Large} 750w`,
+              srcSet: `${taurusMobileScreen2} 375w, ${taurusMobileScreen2} 750w`,
               placeholder: taurusMobileScreen2Placeholder,
             },
           ],
@@ -204,7 +198,6 @@ export const Home = () => {
         visible={visibleSections.includes(details.current)}
         id="details"
       />
-      
       <Footer />
     </div>
   );

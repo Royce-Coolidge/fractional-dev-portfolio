@@ -9,3 +9,6 @@ node_modules
 
 public/draco
 storybook-static
+
+# macOS
+.DS_Store
