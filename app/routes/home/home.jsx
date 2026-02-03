@@ -1,13 +1,14 @@
 import pophams2Large from '~/assets/pophams-mobile-2.png';
-import pophams2Placeholder from '~/assets/gamestack-list-placeholder.jpg';
+import pophams2Placeholder from '~/assets/pophams-mobile-2-placeholder.jpg';
 import pophams2 from '~/assets/pophams-mobile-2.png';
-import pophamsLarge from '~/assets/pophams-mobile-1.png';
-import pophamsPlaceholder from '~/assets/gamestack-login-placeholder.jpg';
-import pophams from '~/assets/pophams-mobile-1.png';
-import taurusMobileScreenPlaceholder from '~/assets/taurus-1-placeholder.jpg';
-import taurusMobileScreen2Placeholder from '~/assets/taurus-2-placeholder.jpg';
+import pophamsLarge from '~/assets/pophams-mobile-1.jpg';
+import pophamsPlaceholder from '~/assets/pophams-mobile-1-placeholder.jpg';
+import pophams from '~/assets/pophams-mobile-1.jpg';
+
 import miroPhoneVideo from '~/assets/miro-phone.mp4';
-import miroPhone1 from '~/assets/miro-1.png';
+import miroPhone1 from '~/assets/miro-1.jpg';
+import miroPhone1Placeholder from '~/assets/miro-phone-1-placeholder.jpg';
+import miroPhoneVideoPlaceholder from '~/assets/miro-video-placeholder.jpg';
 import sonoceaTextureLarge from '~/assets/sonocea-landing-page-large.jpg';
 import sonoceaPlaceholder from '~/assets/sonocea-landing-page-placeholder.jpg';
 import sonoceaTexture from '~/assets/sonocea-landing-page-medium.jpg';
@@ -139,11 +140,11 @@ export const Home = () => {
           textures: [
             {
               srcSet: `${miroPhone1} 375w, ${miroPhone1} 750w`,
-              placeholder: taurusMobileScreenPlaceholder,
+              placeholder: miroPhone1Placeholder,
             },
             {
               srcSet: miroPhoneVideo,
-              placeholder: taurusMobileScreen2Placeholder,
+              placeholder: miroPhoneVideoPlaceholder,
             },
           ],
         }}

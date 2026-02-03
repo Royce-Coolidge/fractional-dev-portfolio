@@ -1,3 +1,4 @@
+# Static assets with short cache (can change)
 /favicon.ico
   Cache-Control: public, max-age=3600, s-maxage=3600
 /favicon.svg
@@ -8,21 +9,83 @@
   Cache-Control: public, max-age=3600, s-maxage=3600
 /shortcut.png
   Cache-Control: public, max-age=3600, s-maxage=3600
-/*.css
+/manifest.json
+  Cache-Control: public, max-age=3600, s-maxage=3600
+/robots.txt
+  Cache-Control: public, max-age=3600, s-maxage=3600
+/sitemap.xml
+  Cache-Control: public, max-age=3600, s-maxage=3600
+
+# Hashed assets - these should NEVER change (immutable)
+/assets/*.css
   Cache-Control: public, max-age=31536000, immutable
-/*.woff2
+  X-Content-Type-Options: nosniff
+/assets/*.js
   Cache-Control: public, max-age=31536000, immutable
-/*.glb
+  X-Content-Type-Options: nosniff
+/assets/*.woff2
   Cache-Control: public, max-age=31536000, immutable
+/assets/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.ttf
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.otf
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.eot
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.glb
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.hdr
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.glsl
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.wasm
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images with hashes (immutable)
+/assets/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.jpeg
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.png
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.avif
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.gif
+  Cache-Control: public, max-age=31536000, immutable
+
+# Non-hashed images (shorter cache)
 /*.svg
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=604800, s-maxage=604800
 /*.jpg
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=604800, s-maxage=604800
+/*.jpeg
+  Cache-Control: public, max-age=604800, s-maxage=604800
 /*.png
-  Cache-Control: public, max-age=31536000, immutable
-/*.js
-  Cache-Control: public, max-age=31536000, immutable
-/*.wasm
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=604800, s-maxage=604800
+/*.webp
+  Cache-Control: public, max-age=604800, s-maxage=604800
+/*.avif
+  Cache-Control: public, max-age=604800, s-maxage=604800
+/*.gif
+  Cache-Control: public, max-age=604800, s-maxage=604800
+
+# HTML files - no cache to ensure fresh content
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
+# Root HTML - no cache
+/
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
+# Preview domains - no index
 https://:project.pages.dev/*
   X-Robots-Tag: noindex

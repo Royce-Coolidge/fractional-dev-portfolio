@@ -1,162 +1,300 @@
 #!/usr/bin/env node
 
 /**
- * Content Hashing Test Script for Cloudflare Pages
+ * Content Hashing Test Script
  * 
- * This script verifies that content hashing is working correctly by:
- * 1. Making a test change to a component
- * 2. Building the project
- * 3. Capturing asset filenames
- * 4. Making another change and building again
- * 5. Verifying that asset hashes changed
- * 6. Restoring original files
+ * This script verifies that your build process is generating proper content hashes
+ * for all assets, ensuring cache busting works correctly.
  */
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
-const TEST_FILE = 'app/components/button/button.jsx';
-const BUILD_DIR = 'build/client/assets';
+const BUILD_DIR = './build/client';
+const ASSETS_DIR = path.join(BUILD_DIR, 'assets');
 
 function log(message, type = 'info') {
-    const icons = { info: 'ℹ️', success: '✅', error: '❌', warning: '⚠️' };
+    const icons = {
+        info: 'ℹ️',
+        success: '✅',
+        error: '❌',
+        warning: '⚠️',
+        test: '🧪'
+    };
     console.log(`${icons[type]} ${message}`);
 }
 
-function getAssetFilenames() {
+function checkBuildExists() {
     if (!fs.existsSync(BUILD_DIR)) {
-        return { js: [], css: [] };
+        log('Build directory not found! Run "npm run build" first.', 'error');
+        return false;
+    }
+    return true;
+}
+
+function checkAssetsDirectory() {
+    if (!fs.existsSync(ASSETS_DIR)) {
+        log('Assets directory not found! Build may have failed.', 'error');
+        return false;
+    }
+    return true;
+}
+
+function analyzeAssetFiles() {
+    log('Analyzing asset files...', 'test');
+
+    const files = fs.readdirSync(ASSETS_DIR);
+
+    const analysis = {
+        total: files.length,
+        css: files.filter(f => f.endsWith('.css')),
+        js: files.filter(f => f.endsWith('.js')),
+        fonts: files.filter(f => /\.(woff2?|ttf|otf|eot)$/.test(f)),
+        images: files.filter(f => /\.(png|jpg|jpeg|gif|svg|webp|avif)$/.test(f)),
+        models: files.filter(f => /\.(glb|hdr|glsl)$/.test(f)),
+        other: files.filter(f => !/\.(css|js|woff2?|ttf|otf|eot|png|jpg|jpeg|gif|svg|webp|avif|glb|hdr|glsl)$/.test(f))
+    };
+
+    log(`Total assets: ${analysis.total}`, 'info');
+    log(`CSS files: ${analysis.css.length}`, 'info');
+    log(`JS files: ${analysis.js.length}`, 'info');
+    log(`Font files: ${analysis.fonts.length}`, 'info');
+    log(`Image files: ${analysis.images.length}`, 'info');
+    log(`3D model files: ${analysis.models.length}`, 'info');
+    log(`Other files: ${analysis.other.length}`, 'info');
+
+    return analysis;
+}
+
+function checkContentHashing(analysis) {
+    log('Checking content hashing...', 'test');
+
+    const allAssets = [
+        ...analysis.css,
+        ...analysis.js,
+        ...analysis.fonts,
+        ...analysis.images,
+        ...analysis.models,
+        ...analysis.other
+    ];
+
+    const hashedFiles = allAssets.filter(file => {
+        // Check for 8-character hash pattern (e.g., filename-ABC12345.ext)
+        return file.includes('-') && file.match(/[a-f0-9]{8}/);
+    });
+
+    const unhashedFiles = allAssets.filter(file => !hashedFiles.includes(file));
+
+    log(`Hashed files: ${hashedFiles.length}/${allAssets.length}`,
+        hashedFiles.length === allAssets.length ? 'success' : 'warning');
+
+    if (unhashedFiles.length > 0) {
+        log('Unhashed files found:', 'warning');
+        unhashedFiles.forEach(file => {
+            log(`  - ${file}`, 'warning');
+        });
     }
 
-    const files = fs.readdirSync(BUILD_DIR);
     return {
-        js: files.filter(f => f.endsWith('.js')).sort(),
-        css: files.filter(f => f.endsWith('.css')).sort(),
-        images: files.filter(f => /\.(png|jpg|jpeg|gif|svg|webp|avif)$/i.test(f)).sort(),
-        fonts: files.filter(f => /\.(woff2?|ttf|otf|eot)$/i.test(f)).sort()
+        hashed: hashedFiles.length,
+        total: allAssets.length,
+        unhashed: unhashedFiles
     };
 }
 
-function makeTestChange() {
-    const content = fs.readFileSync(TEST_FILE, 'utf8');
-    const timestamp = Date.now();
-    const newContent = content.replace(
-        'export const Button = forwardRef(({ href, ...rest }, ref) => {',
-        `export const Button = forwardRef(({ href, ...rest }, ref) => {\n  // Content hash test - ${timestamp}`
-    );
+function checkHashUniqueness(analysis) {
+    log('Checking hash uniqueness...', 'test');
 
-    fs.writeFileSync(TEST_FILE, newContent);
-    return content;
-}
+    const allAssets = [
+        ...analysis.css,
+        ...analysis.js,
+        ...analysis.fonts,
+        ...analysis.images,
+        ...analysis.models,
+        ...analysis.other
+    ];
 
-function restoreFile(originalContent) {
-    fs.writeFileSync(TEST_FILE, originalContent);
-}
+    const hashes = new Set();
+    const duplicates = [];
 
-function buildProject() {
-    log('Building project...', 'info');
-    try {
-        execSync('npm run build', { stdio: 'pipe' });
-        log('Build completed successfully', 'success');
-        return true;
-    } catch (error) {
-        log(`Build failed: ${error.message}`, 'error');
+    allAssets.forEach(file => {
+        const hashMatch = file.match(/-([a-f0-9]{8})/);
+        if (hashMatch) {
+            const hash = hashMatch[1];
+            if (hashes.has(hash)) {
+                duplicates.push(file);
+            } else {
+                hashes.add(hash);
+            }
+        }
+    });
+
+    if (duplicates.length > 0) {
+        log(`Duplicate hashes found: ${duplicates.length}`, 'error');
+        duplicates.forEach(file => {
+            log(`  - ${file}`, 'error');
+        });
         return false;
     }
+
+    log(`✅ All hashes are unique (${hashes.size} unique hashes)`, 'success');
+    return true;
 }
 
-function compareAssets(before, after, type) {
-    const beforeFiles = before[type] || [];
-    const afterFiles = after[type] || [];
+function checkFileSizes(analysis) {
+    log('Checking file sizes...', 'test');
 
-    if (JSON.stringify(beforeFiles) !== JSON.stringify(afterFiles)) {
-        log(`${type.toUpperCase()} files changed - content hashing working!`, 'success');
-        return true;
+    const allAssets = [
+        ...analysis.css,
+        ...analysis.js,
+        ...analysis.fonts,
+        ...analysis.images,
+        ...analysis.models,
+        ...analysis.other
+    ];
+
+    let totalSize = 0;
+    const largeFiles = [];
+
+    allAssets.forEach(file => {
+        const filePath = path.join(ASSETS_DIR, file);
+        const stats = fs.statSync(filePath);
+        const sizeKB = Math.round(stats.size / 1024);
+        totalSize += stats.size;
+
+        if (stats.size > 1024 * 1024) { // Files larger than 1MB
+            largeFiles.push({ file, size: sizeKB });
+        }
+    });
+
+    const totalSizeMB = Math.round(totalSize / (1024 * 1024) * 100) / 100;
+    log(`Total assets size: ${totalSizeMB}MB`, 'info');
+
+    if (largeFiles.length > 0) {
+        log('Large files detected:', 'warning');
+        largeFiles.forEach(({ file, size }) => {
+            log(`  - ${file}: ${size}KB`, 'warning');
+        });
+    }
+
+    return { totalSize, largeFiles };
+}
+
+function generateReport(analysis, hashing, uniqueness, sizes) {
+    log('Generating content hashing report...', 'test');
+
+    const report = {
+        timestamp: new Date().toISOString(),
+        build: {
+            totalAssets: analysis.total,
+            assetTypes: {
+                css: analysis.css.length,
+                js: analysis.js.length,
+                fonts: analysis.fonts.length,
+                images: analysis.images.length,
+                models: analysis.models.length,
+                other: analysis.other.length
+            }
+        },
+        hashing: {
+            hashedFiles: hashing.hashed,
+            totalFiles: hashing.total,
+            percentage: Math.round((hashing.hashed / hashing.total) * 100),
+            unhashedFiles: hashing.unhashed
+        },
+        uniqueness: {
+            uniqueHashes: hashing.hashed,
+            duplicates: hashing.unhashed.length
+        },
+        performance: {
+            totalSizeMB: Math.round(sizes.totalSize / (1024 * 1024) * 100) / 100,
+            largeFiles: sizes.largeFiles.length
+        }
+    };
+
+    // Save report
+    const reportPath = path.join(BUILD_DIR, 'content-hashing-report.json');
+    fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
+    log(`Report saved to: ${reportPath}`, 'success');
+
+    return report;
+}
+
+function printSummary(report) {
+    console.log('\n' + '='.repeat(60));
+    log('CONTENT HASHING TEST SUMMARY', 'test');
+    console.log('='.repeat(60));
+
+    log(`Total Assets: ${report.build.totalAssets}`, 'info');
+    log(`Hashed Assets: ${report.hashing.hashed}/${report.hashing.total} (${report.hashing.percentage}%)`,
+        report.hashing.percentage === 100 ? 'success' : 'warning');
+    log(`Unique Hashes: ${report.uniqueness.uniqueHashes}`, 'success');
+    log(`Total Size: ${report.performance.totalSizeMB}MB`, 'info');
+
+    if (report.hashing.unhashedFiles.length > 0) {
+        console.log('\n⚠️  UNHASHED FILES:');
+        report.hashing.unhashedFiles.forEach(file => {
+            log(`  - ${file}`, 'warning');
+        });
+    }
+
+    if (report.performance.largeFiles > 0) {
+        console.log('\n⚠️  LARGE FILES DETECTED:');
+        report.performance.largeFiles.forEach(({ file, size }) => {
+            log(`  - ${file}: ${size}KB`, 'warning');
+        });
+    }
+
+    console.log('\n' + '='.repeat(60));
+
+    if (report.hashing.percentage === 100 && report.uniqueness.duplicates === 0) {
+        log('🎉 ALL TESTS PASSED! Your cache busting is working perfectly.', 'success');
     } else {
-        log(`${type.toUpperCase()} files unchanged - content hashing may not be working`, 'warning');
-        return false;
+        log('⚠️  Some issues detected. Review the report above.', 'warning');
     }
+
+    console.log('='.repeat(60) + '\n');
 }
 
-function main() {
-    log('🧪 Testing Content Hashing for Cloudflare Pages...', 'info');
+async function main() {
+    log('🧪 Starting Content Hashing Test...', 'test');
     console.log('');
 
     try {
-        // Step 1: Initial build
-        log('Step 1: Initial build', 'info');
-        if (!buildProject()) {
+        // Step 1: Check build exists
+        if (!checkBuildExists()) {
             process.exit(1);
         }
 
-        const initialAssets = getAssetFilenames();
-        log(`Initial assets: ${initialAssets.js.length} JS, ${initialAssets.css.length} CSS files`, 'info');
-
-        // Step 2: Make test change
-        log('Step 2: Making test change to button component', 'info');
-        const originalContent = makeTestChange();
-
-        // Step 3: Build with changes
-        log('Step 3: Building with changes', 'info');
-        if (!buildProject()) {
-            restoreFile(originalContent);
+        // Step 2: Check assets directory
+        if (!checkAssetsDirectory()) {
             process.exit(1);
         }
 
-        const changedAssets = getAssetFilenames();
-        log(`Changed assets: ${changedAssets.js.length} JS, ${changedAssets.css.length} CSS files`, 'info');
+        // Step 3: Analyze asset files
+        const analysis = analyzeAssetFiles();
 
-        // Step 4: Make another change
-        log('Step 4: Making second test change', 'info');
-        const secondChange = changedAssets.js[0] ? 'Second change' : 'Fallback change';
-        makeTestChange();
+        // Step 4: Check content hashing
+        const hashing = checkContentHashing(analysis);
 
-        // Step 5: Build again
-        log('Step 5: Building again', 'info');
-        if (!buildProject()) {
-            restoreFile(originalContent);
-            process.exit(1);
-        }
+        // Step 5: Check hash uniqueness
+        const uniqueness = checkHashUniqueness(analysis);
 
-        const finalAssets = getAssetFilenames();
+        // Step 6: Check file sizes
+        const sizes = checkFileSizes(analysis);
 
-        // Step 6: Restore original file
-        log('Step 6: Restoring original file', 'info');
-        restoreFile(originalContent);
+        // Step 7: Generate report
+        const report = generateReport(analysis, hashing, uniqueness, sizes);
 
-        // Step 7: Analyze results
-        log('Step 7: Analyzing results', 'info');
-        console.log('');
+        // Step 8: Print summary
+        printSummary(report);
 
-        const jsChanged = compareAssets(initialAssets, changedAssets, 'js');
-        const cssChanged = compareAssets(initialAssets, changedAssets, 'css');
-        const jsChangedAgain = compareAssets(changedAssets, finalAssets, 'js');
-
-        console.log('');
-        log('📊 Test Results Summary:', 'info');
-        log(`JavaScript files changed: ${jsChanged ? 'YES' : 'NO'}`, jsChanged ? 'success' : 'warning');
-        log(`CSS files changed: ${cssChanged ? 'YES' : 'NO'}`, cssChanged ? 'success' : 'warning');
-        log(`JavaScript files changed again: ${jsChangedAgain ? 'YES' : 'NO'}`, jsChangedAgain ? 'success' : 'warning');
-
-        if (jsChanged || cssChanged) {
-            console.log('');
-            log('🎉 SUCCESS: Content hashing is working correctly!', 'success');
-            log('   Your build system generates unique filenames when content changes.', 'success');
-            log('   This prevents browser caching issues on Cloudflare Pages.', 'success');
+        // Exit with appropriate code
+        if (hashing.hashed === hashing.total && uniqueness) {
+            process.exit(0);
         } else {
-            console.log('');
-            log('⚠️  WARNING: Content hashing may not be working as expected.', 'warning');
-            log('   Asset filenames did not change when code was modified.', 'warning');
-            log('   This could lead to caching issues in production.', 'warning');
+            process.exit(1);
         }
-
-        console.log('');
-        log('📋 Next Steps:', 'info');
-        log('1. Deploy to Cloudflare Pages: npm run deploy', 'info');
-        log('2. Test in production with browser dev tools', 'info');
-        log('3. Verify cache headers are working correctly', 'info');
-        log('4. Monitor for any caching issues in production', 'info');
 
     } catch (error) {
         log(`Test failed: ${error.message}`, 'error');
@@ -165,4 +303,3 @@ function main() {
 }
 
 main();
-

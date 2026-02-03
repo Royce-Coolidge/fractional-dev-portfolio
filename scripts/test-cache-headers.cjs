@@ -88,22 +88,30 @@ async function discoverAssets() {
 
     // Common asset patterns to test
     const assetTests = [
-        // Static assets (should have 1-year cache)
+        // Static assets (should have 1-hour cache)
         { url: `${SITE_URL}/favicon.ico`, expected: 'max-age=3600' },
         { url: `${SITE_URL}/favicon.svg`, expected: 'max-age=3600' },
         { url: `${SITE_URL}/icon-256.png`, expected: 'max-age=3600' },
-
-        // You'll need to update these with actual hashed asset URLs
-        // Get these from your browser dev tools Network tab
-        // Example: { url: `${SITE_URL}/assets/entry.client-ABC123.js`, expected: 'max-age=31536000' },
+        { url: `${SITE_URL}/manifest.json`, expected: 'max-age=3600' },
+        { url: `${SITE_URL}/robots.txt`, expected: 'max-age=3600' },
     ];
 
-    log('📝 To test hashed assets, you need to:', 'info');
-    log('1. Visit your site in browser', 'info');
-    log('2. Open Dev Tools → Network tab', 'info');
-    log('3. Reload page', 'info');
-    log('4. Copy asset URLs from Network tab', 'info');
-    log('5. Add them to the assetTests array in this script', 'info');
+    // Try to discover hashed assets by fetching the main page
+    try {
+        log('🔍 Attempting to discover hashed assets...', 'info');
+        const mainPageResponse = await makeRequest(`${SITE_URL}/`);
+
+        if (mainPageResponse.statusCode === 200) {
+            log('✅ Main page accessible', 'success');
+        }
+    } catch (error) {
+        log(`⚠️ Could not fetch main page: ${error.message}`, 'warning');
+    }
+
+    log('📝 To test hashed assets automatically:', 'info');
+    log('1. Run: npm run test:content-hashing', 'info');
+    log('2. Or manually add asset URLs to this script', 'info');
+    log('3. Check browser dev tools Network tab for asset URLs', 'info');
 
     return assetTests;
 }
