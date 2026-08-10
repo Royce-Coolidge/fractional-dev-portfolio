@@ -6,7 +6,6 @@ import { DecoderText } from '~/components/decoder-text';
 import { Divider } from '~/components/divider';
 import { Heading } from '~/components/heading';
 import { Image } from '~/components/image';
-import { Link } from '~/components/link';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { Transition } from '~/components/transition';
@@ -21,9 +20,7 @@ const ProfileText = ({ visible, titleId }) => (
       <DecoderText text="Bom día!" start={visible} delay={500} />
     </Heading>
     <Text className={styles.description} data-visible={visible} size="l" as="p">
-      I’m Rowley, I currently live in Lisbon working as a freelance web developer. My projects include UX design, UI
-      animations, squarespace development, shopify theme development, and icon illustration. Being comfortable with code allows me to customize any website to my clients' needs. If you’re interested in the tools and software I
-      use check out my <Link href="/uses">uses page</Link>. Currently im nerding out on text reveal animations, take a look at my most recent <Link href="https://developer-for-designers.pages.dev/">text reveal experiment</Link> .
+      I’ve spent the last decade building Shopify stores as a white-label partner for design studios and agencies, taking finished Figma designs and turning them into fast, editable storefronts their clients can run without a developer on retainer. That covers custom themes built from scratch, heavily customised premium themes where budget calls for it, and the unglamorous parts most developers avoid: VAT setup, EU compliance and untangling things when they go wrong. Recent builds span fashion, skincare, luxury interiors and hospitality, typically delivered in four to six weeks from approved designs. Before anything gets built, I’ll tell you honestly whether it needs building at all.
     </Text>
     <Text className={styles.description} data-visible={visible} size="l" as="p">
       In my spare time I like to surf, read barbara kingsolver books, write bad poetry, and drink copious amounts of yorkshire tea (I'm British 🇬🇧 btw). I’m always down for hearing

@@ -6,6 +6,7 @@ import GothamMediumItalic from '~/assets/fonts/gotham-medium-italic.woff2';
 import GothamMedium from '~/assets/fonts/gotham-medium.woff2';
 import IPAGothic from '~/assets/fonts/ipa-gothic.woff2';
 import AeonikBold from '~/assets/fonts/aeonik-bold.otf';
+import AeonikRegular from '~/assets/fonts/aeonik-regular.otf';
 import { createContext, useContext } from 'react';
 import { classes, media } from '~/utils/style';
 import { themes, tokens } from './theme';
@@ -174,7 +175,15 @@ const fontStyles = squish(`
   }
 
   @font-face {
-    font-family: 'Aeonik Bold';
+    font-family: Aeonik;
+    font-weight: 400;
+    src: url(${AeonikRegular}) format('opentype');
+    font-display: swap;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: Aeonik;
     font-weight: 700;
     src: url(${AeonikBold}) format('opentype');
     font-display: swap;
