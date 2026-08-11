@@ -40,7 +40,7 @@
   color: var(--textLight);
   margin-bottom: var(--space2XL);
   margin-top: 0;
-  font-weight: var(--fontWeightMedium);
+  font-weight: var(--fontWeightBold);
   line-height: 1;
   opacity: 0;
   transition: opacity var(--durationM) var(--bezierFastoutSlowin) 0.1s;

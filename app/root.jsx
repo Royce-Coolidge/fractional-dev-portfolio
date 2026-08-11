@@ -14,11 +14,14 @@ import { ThemeProvider, themeStyles } from '~/components/theme-provider';
 import GothamBook from '~/assets/fonts/gotham-book.woff2';
 import GothamMedium from '~/assets/fonts/gotham-medium.woff2';
 import AeonikBold from '~/assets/fonts/aeonik-bold.otf';
+import AeonikRegular from '~/assets/fonts/aeonik-regular.otf';
 import { useEffect } from 'react';
 import { Error } from '~/layouts/error';
 import { VisuallyHidden } from '~/components/visually-hidden';
 import { Navbar } from '~/layouts/navbar';
 import { Progress } from '~/components/progress';
+import { Agentation } from 'agentation';
+import { useHydrated } from '~/hooks/useHydrated';
 import config from '~/config.json';
 import styles from './root.module.css';
 import './reset.module.css';
@@ -37,6 +40,13 @@ export const links = () => [
     href: GothamBook,
     as: 'font',
     type: 'font/woff2',
+    crossOrigin: '',
+  },
+  {
+    rel: 'preload',
+    href: AeonikRegular,
+    as: 'font',
+    type: 'font/otf',
     crossOrigin: '',
   },
   {
@@ -89,6 +99,7 @@ export default function App() {
   let { canonicalUrl, theme } = useLoaderData();
   const fetcher = useFetcher();
   const { state } = useNavigation();
+  const isHydrated = useHydrated();
 
   if (fetcher.formData?.has('theme')) {
     theme = fetcher.formData.get('theme');
@@ -140,6 +151,7 @@ export default function App() {
             <Outlet />
           </main>
         </ThemeProvider>
+        {import.meta.env.DEV && isHydrated && <Agentation />}
         <ScrollRestoration />
         <Scripts />
       </body>
