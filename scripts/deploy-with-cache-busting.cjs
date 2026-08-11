@@ -31,7 +31,7 @@ if (fs.existsSync(devVarsPath)) {
 
 const PROJECT_NAME = 'fractional-dev-portfolio';
 const BUILD_DIR = './build/client';
-const SITE_URL = 'https://rowleythompson.com';
+const SITE_URL = 'https://www.rowleythompson.com';
 
 function log(message, type = 'info') {
     const icons = {
