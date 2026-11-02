@@ -15,7 +15,6 @@ import { cssProps, msToNum, numToMs } from '~/utils/style';
 import { baseMeta } from '~/utils/meta';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import { json } from '@remix-run/cloudflare';
-import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 import styles from './contact.module.css';
 
 export const meta = () => {
@@ -30,22 +29,21 @@ export const meta = () => {
 const MAX_EMAIL_LENGTH = 512;
 const MAX_MESSAGE_LENGTH = 4096;
 const EMAIL_PATTERN = /(.+)@(.+){2,}\.(.+){2,}/;
+const TO_EMAIL = 'rowley@rumplestudios.com';
 
 export async function action({ context, request }) {
   try {
     // Check if required environment variables exist
-    if (!context.cloudflare.env.AWS_ACCESS_KEY_ID || !context.cloudflare.env.AWS_SECRET_ACCESS_KEY || !context.cloudflare.env.EMAIL || !context.cloudflare.env.FROM_EMAIL) {
-      console.error('Missing required environment variables');
-      return json({ errors: { general: 'Server configuration error' } }, { status: 500 });
+    const missingVars = ['RESEND_API_KEY', 'FROM_EMAIL'].filter(
+      key => !context.cloudflare.env[key]
+    );
+    if (missingVars.length > 0) {
+      console.error(`Missing required environment variables: ${missingVars.join(', ')}`);
+      return json(
+        { errors: { general: `Server configuration error (missing: ${missingVars.join(', ')})` } },
+        { status: 500 }
+      );
     }
-
-    const ses = new SESClient({
-      region: 'eu-north-1',
-      credentials: {
-        accessKeyId: context.cloudflare.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: context.cloudflare.env.AWS_SECRET_ACCESS_KEY,
-      },
-    });
 
     const formData = await request.formData();
     const isBot = String(formData.get('name'));
@@ -77,26 +75,26 @@ export async function action({ context, request }) {
       return json({ errors });
     }
 
-    // Send email via Amazon SES
-    await ses.send(
-      new SendEmailCommand({
-        Destination: {
-          ToAddresses: [context.cloudflare.env.EMAIL],
-        },
-        Message: {
-          Body: {
-            Text: {
-              Data: `From: ${email}\n\n${message}`,
-            },
-          },
-          Subject: {
-            Data: `Portfolio message from ${email}`,
-          },
-        },
-        Source: `Portfolio <${context.cloudflare.env.FROM_EMAIL}>`,
-        ReplyToAddresses: [email],
-      })
-    );
+    // Send email via Resend
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${context.cloudflare.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: `Portfolio <${context.cloudflare.env.FROM_EMAIL}>`,
+        to: [TO_EMAIL],
+        reply_to: email,
+        subject: `Portfolio message from ${email}`,
+        text: `From: ${email}\n\n${message}`,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      throw new Error(`Resend API error (${response.status}): ${errorBody}`);
+    }
 
     return json({ success: true });
   } catch (error) {
