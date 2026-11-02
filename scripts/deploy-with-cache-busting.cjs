@@ -32,6 +32,9 @@ if (fs.existsSync(devVarsPath)) {
 const PROJECT_NAME = 'fractional-dev-portfolio';
 const BUILD_DIR = './build/client';
 const SITE_URL = 'https://www.rowleythompson.com';
+// Pin to the Pages production branch so deploys hit production regardless of the
+// current git branch (wrangler otherwise infers the branch and ships a preview).
+const PRODUCTION_BRANCH = 'master';
 
 function log(message, type = 'info') {
     const icons = {
@@ -141,7 +144,7 @@ function deployToCloudflare() {
     log('Deploying to Cloudflare Pages...', 'deploy');
 
     // Use wrangler with project config - deploys based on wrangler.toml pages_build_output_dir
-    const deployCommand = `wrangler pages deploy ${BUILD_DIR} --project-name ${PROJECT_NAME}`;
+    const deployCommand = `wrangler pages deploy ${BUILD_DIR} --project-name ${PROJECT_NAME} --branch ${PRODUCTION_BRANCH}`;
     const output = runCommand(deployCommand, 'Deploying to Cloudflare Pages');
 
     // Extract deployment URL from output
